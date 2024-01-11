@@ -1,0 +1,30 @@
+{
+  "name": "nuxt-app",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev --port=3000",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "https": "local-ssl-proxy --source 3010 --target 3000 --cert localhost.pem --key localhost-key.pem && nuxt dev"
+  },
+  "dependencies": {
+    "@vueuse/core": "^10.5.0",
+    "axios": "^1.6.5",
+    "lodash.debounce": "^4.0.8",
+    "moment": "^2.29.4",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.18.8",
+    "autoprefixer": "^10.4.14",
+    "nuxt": "^3.4.3",
+    "postcss": "^8.4.21",
+    "tailwindcss": "^3.3.1",
+    "vue3-json-viewer": "^2.2.2"
+  },
+  "overrides": {
+    "vue": "^3.2.47"
+  }
+}
