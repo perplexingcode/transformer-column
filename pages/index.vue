@@ -66,6 +66,13 @@
         >
           Transform
         </button>
+        <div class="progress mb-2" v-show="_state.isProcessing">
+          <span v-show="_state.processStage == 'transform'">
+            Processing... {{ index + 1 }}/{{ cells.length }}
+          </span>
+          <span v-show="_state.processStage == 'before'"> Initilizing... </span>
+          <span v-show="_state.processStage == 'after'"> Finishing up... </span>
+        </div>
         <div class="code_before w-full">
           <h3 class="text-xl font-bold mb-3">Code Before</h3>
           <textarea
@@ -124,6 +131,8 @@ const data = inject('data');
 const _state = reactive({
   isEditingTitle: false,
   newTitle: '',
+  isProcessing: false,
+  processStage: '', // before, transform, after
 });
 
 const hasPresetChanges = computed(() => {
@@ -246,7 +255,11 @@ function deletePreset() {
 
 const output = ref([]);
 
+const index = ref(0);
+
 async function transform() {
+  _state.isProcessing = true;
+  _state.processStage = 'before';
   cells.value = [];
   const _cells = deepClone(cells.value);
   const rows = cells.value;
@@ -257,7 +270,9 @@ async function transform() {
   } catch (error) {
     console.error('Evaluation failed:Code Before\n' + error);
   }
+  _state.processStage = 'transform';
   for (let i = 0; i < cells.value.length; i++) {
+    index.value = i;
     if (preset.codeTransform.trim() === '') {
       output.value[i] = cells.value[i];
       continue;
@@ -277,11 +292,14 @@ async function transform() {
     if (value === undefined) output.value[i] = 'undefined';
     if (value === null) output.value[i] = 'null';
   }
+  _state.processStage = 'after';
   try {
     if (preset.codeBefore.trim() !== '') await eval(preset.codeAfter);
   } catch (error) {
     console.error('Evaluation failed:Code After\n' + error);
   }
+  _state.isProcessing = false;
+  _state.processStage = '';
 }
 </script>
 <style>
