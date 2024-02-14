@@ -121,7 +121,7 @@ import { deepClone, ignoreBuildOptimize } from '~/static/utils';
 import { get, post } from '~/static/request';
 import axios from 'axios';
 import moment from 'moment';
-import { dbDelete, getAll, upsert } from '~/static/db';
+import { dbDelete, getAll, getById, upsert, query, cache } from '~/static/db';
 import { v4 } from 'uuid';
 
 const app = inject('app');
@@ -146,7 +146,18 @@ const hasPresetChanges = computed(() => {
   );
 });
 
-ignoreBuildOptimize([app, state, data, axios, moment, get, post]);
+ignoreBuildOptimize([
+  app,
+  state,
+  data,
+  axios,
+  moment,
+  get,
+  post,
+  getById,
+  query,
+  cache,
+]);
 
 const input = ref('');
 const cells = computed(() => {
