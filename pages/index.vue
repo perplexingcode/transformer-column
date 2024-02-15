@@ -155,6 +155,7 @@ ignoreBuildOptimize([
   get,
   post,
   getById,
+  dbDelete,
   query,
   cache,
 ]);
